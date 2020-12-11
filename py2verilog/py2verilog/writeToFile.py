@@ -48,9 +48,16 @@ class writeToFile:
         temp.clear()
         if module.combinational.items(): #if there is stuff to write, check so we don't write the closing brackets with nothing
             for key,val in module.combinational.items(): #convert dict to list 
-                if key[0:6] == "ASSIGN": #check what kind of statement it is
+                if key [0:3] == "NOT":
+                    temp.append("not({a},{b})".format(a=val[0],b=val[1]))
+                elif key[0:3] == "NOR":
+                    temp.append("nor({o},{a},{b})".format(o=val[0],a=val[1],b=val[2]))
+                elif key[0:4] == "NAND":
+                    temp.append("nand({o},{a},{b})".format(o=val[0],a=val[1],b=val[2]))
+                elif key[0:6] == "ASSIGN": #check what kind of statement it is
                     temp.append("assign {l} = {r}".format(l=val[0],r=val[1])) #need to actually look at the bit width if we wanna have wider wires but for RO its fine right now
-            file.write("\t{comb};\n\n".format(comb=";\n\t".join(temp))) #convert list to string and write
+
+            file.write("\t{comb};\n\n".format(comb="/*synthesis keep*/;\n\t".join(temp))) #convert list to string and write, the /*synthesis keep*/ tag tells Quartus to not optimize it out
 
         #writing generate loops
         temp.clear()

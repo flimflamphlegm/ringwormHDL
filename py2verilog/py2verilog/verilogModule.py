@@ -9,7 +9,7 @@ class verilogModule:
     self.ports - a dict of all the module ports, where 0 = input and 1 = output
     self.sequential - a list of all sequential logic, where the 0th element is the first command executed in the sequential (always) block
     self.logic - a dict of all logic defines (wire/regs), where the order is based on input order
-    self.combinational - a dict of all combinational logic, where the order is irrelevant (since it's combinational logic)
+    self.combinational - a dict of all combinational logic, where all are syntehsized with the tag /*synthesis keep*/ to avoid optimization
     """
     def __init__(self,moduleName):
         self.moduleName = moduleName
@@ -66,7 +66,7 @@ class verilogModule:
 
     """
     assign: takes lhs and rhs values, along with their bit widths, and creates an assign statement
-    returns a tuple of type and index in combinational dict
+    returns a tuple of type and index in combinational dict /*synthesis keep*/ 
     l - lh WIRE ONLY (str)
     r - rh wire/reg (str)
     lw - left bit [_:0] (int)
@@ -82,6 +82,41 @@ class verilogModule:
             print("LHS cannot be the same as RHS!")
             return ("error")
         return ("ASSIGN",temp)
+
+    """
+    notGate: creates a NOT gate with /*synthesis keep*/ 
+    returns type of gate + i/o
+    a - input port (str)
+    b - output port (str)
+    """
+    def notGate(self,a,b):
+        temp = "NOT{n}".format(n=str(len(self.combinational) + 1))
+        self.combinational[temp] = (a,b)
+        return("NOT",a,b)
+
+    """
+    nandGate: creates a NAND gate with /*synthesis keep*/ 
+    returns type of gate + i/o
+    o - output port (str)
+    a - input port 1 (str)
+    b - input port 2 (str)
+    """
+    def nandGate(self,o,a,b):
+        temp = "NAND{n}".format(n=str(len(self.combinational) + 1))
+        self.combinational[temp] = (o,a,b)
+        return("NAND",o,a,b)
+
+    """
+    norGate: creates a NOR gate with /*synthesis keep*/ 
+    returns type of gate + i/o
+    o - output port (str)
+    a - input port 1 (str)
+    b - input port 2 (str)
+    """
+    def norGate(self,o,a,b):
+        temp = "NOR{n}".format(n=str(len(self.combinational) + 1))
+        self.combinational[temp] = (o,a,b)
+        return("NOR",o,a,b)
 
     """
     not don

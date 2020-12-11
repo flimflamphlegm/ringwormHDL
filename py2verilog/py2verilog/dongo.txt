@@ -1,20 +1,14 @@
-"""
 stuff2ad:
     random test stuffs from:
         Reliability monitoring ring oscillator structures for isolated/combined NBTI and PBTI measurement in high-k metal gate technologies
-            NOR - NBTI only
-            NAND - PBTI only
         An On-die Digital Aging Monitor against HCI and xBTI in 16 nm Fin-FET Bulk CMOS Technology
         Fast Characterization of PBTI and NBTI Induced Frequency Shifts under a Realistic Recovery Bias Using a Ring Oscillator Based Circuit
         A Ring-Oscillator-Based Reliability Monitor for Isolated Measurement of NBTI and PBTI in High-k/Metal Gate Technology
         A fWLR test structure and method for device reliability monitoring using product relevant circuits
         PBTI/NBTI monitoring ring oscillator circuits with on-chip Vt characterization and high frequency AC stress capability
-    different logic gate ROs?
     on-chip memory?
-    various RO lengths
-    class functions for ROs in parallel
-    class functions for ROs connected to IO vs. power interally
-"""
 
 current functions:
 any number of RO with user-specified input/output port, type of gate (NOR,NAND,NOT), and number of stages
+class functions for ROs in parallel
+class functions for ROs connected to IO vs. power interally

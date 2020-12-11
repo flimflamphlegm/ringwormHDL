@@ -28,13 +28,13 @@ class generate:
         ringOsc.port(in_p,"i") #set the input/output ports as defined by the user
         ringOsc.port(out_p,"o")
         ringOsc.logic("a0",1) 
-        for i in range(n): #create n number of logic types
+        for i in range(n - 1): #create n number of logic types
             ringOsc.logic("r{num}".format(num=str(i)),1)
-        ringOsc.assign("a0","!({input} & r{num})".format(input=in_p,num=str(n - 1))) #set the enable gate, assign default is 1 bit wire, can specify width manually
-        ringOsc.assign("r0","!a0")
+        ringOsc.nandGate("a0",in_p,"r{n}".format(n=str(n - 2))) #set the enable gate
+        ringOsc.notGate("r0","a0")
         for i in range(n - 2): #create n number of inverter stages
-            ringOsc.assign("r{num}".format(num=str(i + 1)),"!r{num}".format(num=str(i))) 
-        ringOsc.assign(out_p,"r{num}".format(num=str(n - 2)))
+            ringOsc.notGate("r{num}".format(num=str(i + 1)),"r{num}".format(num=str(i))) 
+        ringOsc.assign(out_p,"r{num}".format(num=str(n - 2))) #assign bit width is adjustable
         newFile.writeSubModule(ringOsc) #writes module created above to the new file 
 
         self.modules.append(moduleName) #save name and ports so that they can be connected in top module later
@@ -54,12 +54,12 @@ class generate:
         ringOsc.port(in_p,"i") #set the input/output ports as defined by the user
         ringOsc.port(out_p,"o")
         ringOsc.logic("a0",1) 
-        for i in range(n): #create n number of logic types
+        for i in range(n - 1): #create n number of logic types
             ringOsc.logic("r{num}".format(num=str(i)),1)
-        ringOsc.assign("a0","!({input} & r{num})".format(input=in_p,num=str(n - 1))) #set the enable gate, assign default is 1 bit wire, can specify width manually
-        ringOsc.assign("r0","!(a0 & a0)")
+        ringOsc.nandGate("a0",in_p,"r{n}".format(n=str(n - 2))) #set the enable gate
+        ringOsc.nandGate("r0","a0","a0")
         for i in range(n - 2): #create n number of inverter stages
-            ringOsc.assign("r{num}".format(num=str(i + 1)),"!(r{num} & r{num})".format(num=str(i))) 
+            ringOsc.nandGate("r{num}".format(num=str(i + 1)),"r{num}".format(num=str(i)),"r{num}".format(num=str(i))) 
         ringOsc.assign(out_p,"r{num}".format(num=str(n - 2)))
         newFile.writeSubModule(ringOsc) #writes module created above to the new file 
 
@@ -80,12 +80,12 @@ class generate:
         ringOsc.port(in_p,"i") #set the input/output ports as defined by the user
         ringOsc.port(out_p,"o")
         ringOsc.logic("a0",1) 
-        for i in range(n): #create n number of logic types
+        for i in range(n - 1): #create n number of logic types
             ringOsc.logic("r{num}".format(num=str(i)),1)
-        ringOsc.assign("a0","!({input} & r{num})".format(input=in_p,num=str(n - 1))) #set the enable gate, assign default is 1 bit wire, can specify width manually
-        ringOsc.assign("r0","!(a0 | a0)")
+        ringOsc.nandGate("a0",in_p,"r{n}".format(n=str(n - 2))) #set the enable gate
+        ringOsc.norGate("r0","a0","a0")
         for i in range(n - 2): #create n number of inverter stages
-            ringOsc.assign("r{num}".format(num=str(i + 1)),"!(r{num} | r{num})".format(num=str(i))) 
+            ringOsc.norGate("r{num}".format(num=str(i + 1)),"r{num}".format(num=str(i)),"r{num}".format(num=str(i)))  
         ringOsc.assign(out_p,"r{num}".format(num=str(n - 2)))
         newFile.writeSubModule(ringOsc) #writes module created above to the new file 
 
