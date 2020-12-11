@@ -3,18 +3,6 @@ verilogModule - class for generating SystemVerilog modules
 """
 class verilogModule:
     """
-    sequential logic 
-    """
-    def ifStatement(self,condition,execute):
-        pass
-    def elseStatement(self):
-        pass
-    def elifStatement(self):
-        pass
-    def forLoop(self):
-        pass
-
-    """
     __init__: takes string "name" and instantiates a Verilog/SystemVerilog module with that name
     *dicts are ordered in python 3.6+, use OrderedDict if older version*
     self.parameters - a dict of all the module parameters
@@ -30,6 +18,7 @@ class verilogModule:
         self.sequential = []
         self.logics = {}
         self.combinational = {}
+        self.generate = {}
 
     """
     parameter: takes parameter name, value, and adds them to the module
@@ -79,17 +68,56 @@ class verilogModule:
     assign: takes lhs and rhs values, along with their bit widths, and creates an assign statement
     returns a tuple of type and index in combinational dict
     l - lh WIRE ONLY (str)
+    r - rh wire/reg (str)
     lw - left bit [_:0] (int)
     lwd - right bit [7:_] (int)
-    l - rh wire/reg (str)
     rw - left bit [_:0] (int)
     rwd - right bit [7:_] (int)
     """
-    def assign(self,l,lw,lwd,r,rw,rwd):
-        if lw != lwd and rw != rwd: #can't have a 0 width wire
+    def assign(self,l,r,lw=0,lwd=0,rw=0,rwd=0): #default to 1 bit wire, can specify width manually
+        if l != r:
             temp = "ASSIGN" + str(len(self.combinational) + 1) #get new dict key
-            self.combinational[temp] = (l,lw,lwd,r,rw,rwd)
+            self.combinational[temp] = (l,r,lw,lwd,rw,rwd)
         else:
-            print("Can't have a 0 width wire!")
+            print("LHS cannot be the same as RHS!")
             return ("error")
         return ("ASSIGN",temp)
+
+    """
+    not don
+    generateLoop: Generate for loop with given command
+    n - number of times loop should execute (int)
+    genvar - name of generate variable
+    cmd - command to execute in loop (tuple)
+
+    example:
+        module = verilogModule(test)
+        generateLoop(2,i,module.assign(x[i],1,1,i,1,1))
+    becomes:
+        genvar i;        
+        generate        
+        for (i = 0; i < 2 ; i++) {        
+          assign x[i] = i;}        
+        endgenerate 
+    """
+    def generateLoop(n,genvar,cmd):
+        if n > 0:
+            temp = len(self.generate) + 1 #get new dict key
+            self.generate[temp] = (n,genvar,cmd)   
+        else: #need to loop at least once
+            print("Invalid loop length!")
+            return ("error")
+        return ("GENLOOP",n,cmd)
+
+    """
+    genvar: creates a genvar, which is exclusively used in generate for loops
+    returns tuple of name/type, ("error") if could not create
+    p - name of genvar (str)
+    """
+    def genvar(self,p):
+        if p not in self.logics:
+            self.logics[p] = "g"
+        else: #cannot redefine logic that already exists
+            print("{} already exists!".format(p))
+            return ("error")
+        return ("GENVAR",p)
