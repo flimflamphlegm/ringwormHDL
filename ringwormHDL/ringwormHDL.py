@@ -3,7 +3,13 @@ from generate import generate
 
 if __name__ == "__main__":
     newFile = writeToFile("ro.sv") #creates new file with name "ro.sv"
-
+    """
+    #on chip memory test
+    genModules = generate(); #store all names of generated modules
+    genModules.onChipMem("d","wren","clk","write_addr","read_addr","q",newFile)
+    newFile.writeTopModule(genModules) #connect all generated modules inside a top_module
+    """
+    #ring osc prompts
     while True: #ask user for number of ring oscillators 
         try:
             c = int(input("Please enter the number of ring oscillators:"))
@@ -36,11 +42,11 @@ if __name__ == "__main__":
             else:
                 break
 
-        if type == 0: #generate appropriate RO based on user choice from above
+        if type == 0: #generate appropriate RO based on user choice from above, and write to file
             genModules.RO_not(n,in_port,out_port,newFile)
         elif type == 1:
             genModules.RO_nand(n,in_port,out_port,newFile)
         else:
             genModules.RO_nor(n,in_port,out_port,newFile)
 
-    newFile.writeTopModule(genModules) #connect all generated modules inside a top_module 
+    newFile.writeTopModule(genModules) #connect all generated modules inside a top_module
