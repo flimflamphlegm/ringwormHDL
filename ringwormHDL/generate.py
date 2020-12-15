@@ -25,20 +25,20 @@ class generate:
     """
     def RO_not(self,n,in_p,out_p,newFile):
         moduleName = "RO_not_{stages}_{instance}".format(stages=str(n),instance=str(len(self.modules)))
-        ringOsc = verilogModule(moduleName) #create a new verilog module named "RO_not_n_i" where n is number of stages and i is instance number
-        ringOsc.port(in_p,"i") #set the input/output ports as defined by the user
-        ringOsc.port(out_p,"o")
-        ringOsc.logic("a0",1,"synthesis keep") 
-        for i in range(n - 1): #create n number of logic types
-            ringOsc.logic("r{num}".format(num=str(i)),1,"synthesis keep")
-        ringOsc.nandGate("a0",in_p,"r{n}".format(n=str(n - 2)),"synthesis keep") #set the enable gate
+        ringOsc = verilogModule(moduleName)                                         #create a new verilog module named "RO_not_n_i" where n is number of stages and i is instance number
+        ringOsc.port(in_p,"i")                                                      #set the input enable port as defined by the user
+        ringOsc.port(out_p,"o")                                                     #set the output port as defined by the user
+        ringOsc.logic("a0",1,"synthesis keep")                                      #create "logic" data types for connecting gates   
+        for i in range(n - 1):                                                      
+            ringOsc.logic("r{num}".format(num=str(i)),1,"synthesis keep")           #the /*synthesis keep*/ tag tells Quartus to not optimize it out
+        ringOsc.nandGate("a0",in_p,"r{n}".format(n=str(n - 2)),"synthesis keep")    #set the enable gate
         ringOsc.notGate("r0","a0","synthesis keep")
-        for i in range(n - 2): #create n number of inverter stages
+        for i in range(n - 2):                                                      #create n number of inverter stages
             ringOsc.notGate("r{num}".format(num=str(i + 1)),"r{num}".format(num=str(i)),"synthesis keep") 
-        ringOsc.assign(out_p,"r{num}".format(num=str(n - 2)),"synthesis keep") #assign bit width is adjustable
-        newFile.writeSubModule(ringOsc) #writes module created above to the new file 
+        ringOsc.assign(out_p,"r{num}".format(num=str(n - 2)),"synthesis keep")      #assign bit width is adjustable
+        newFile.writeSubModule(ringOsc)                                             #writes module created above to the new file 
 
-        self.modules.append(moduleName) #save name and ports so that they can be connected in top module later
+        self.modules.append(moduleName)                                             #save name and ports so that they can be connected in top module later
         self.inputs.append([in_p])
         self.outputs.append([out_p])
         print("RO_not of {num} generated".format(num=str(n)))
@@ -54,20 +54,20 @@ class generate:
     """
     def RO_nand(self,n,in_p,out_p,newFile):
         moduleName = "RO_nand_{stages}_{instance}".format(stages=str(n),instance=str(len(self.modules)))
-        ringOsc = verilogModule(moduleName) #create a new verilog module named "RO_nand_n_i" where n is number of stages and i is instance number
-        ringOsc.port(in_p,"i") #set the input/output ports as defined by the user
-        ringOsc.port(out_p,"o")
-        ringOsc.logic("a0",1,"synthesis keep") 
-        for i in range(n - 1): #create n number of logic types
-            ringOsc.logic("r{num}".format(num=str(i)),1,"synthesis keep")
-        ringOsc.nandGate("a0",in_p,"r{n}".format(n=str(n - 2)),"synthesis keep") #set the enable gate
+        ringOsc = verilogModule(moduleName)                                         #create a new verilog module named "RO_nand_n_i" where n is number of stages and i is instance number
+        ringOsc.port(in_p,"i")                                                      #set the input enable port as defined by the user
+        ringOsc.port(out_p,"o")                                                     #set the output port as defined by the user
+        ringOsc.logic("a0",1,"synthesis keep")                                      #create "logic" data types for connecting gates   
+        for i in range(n - 1):                                                      
+            ringOsc.logic("r{num}".format(num=str(i)),1,"synthesis keep")           #the /*synthesis keep*/ tag tells Quartus to not optimize it out
+        ringOsc.nandGate("a0",in_p,"r{n}".format(n=str(n - 2)),"synthesis keep")    #set the enable gate
         ringOsc.nandGate("r0","a0","a0","synthesis keep")
-        for i in range(n - 2): #create n number of inverter stages
+        for i in range(n - 2):                                                      #create n number of inverter stages
             ringOsc.nandGate("r{num}".format(num=str(i + 1)),"r{num}".format(num=str(i)),"r{num}".format(num=str(i)),"synthesis keep") 
         ringOsc.assign(out_p,"r{num}".format(num=str(n - 2)),"synthesis keep")
-        newFile.writeSubModule(ringOsc) #writes module created above to the new file 
+        newFile.writeSubModule(ringOsc)                                             #writes module created above to the new file 
 
-        self.modules.append(moduleName) #save name and ports so that they can be connected in top module later
+        self.modules.append(moduleName)                                             #save name and ports so that they can be connected in top module later
         self.inputs.append([in_p])
         self.outputs.append([out_p])
         print("RO_nand of {num} generated".format(num=str(n)))
@@ -83,20 +83,20 @@ class generate:
     """
     def RO_nor(self,n,in_p,out_p,newFile):
         moduleName = "RO_nor_{stages}_{instance}".format(stages=str(n),instance=str(len(self.modules)))
-        ringOsc = verilogModule(moduleName) #create a new verilog module named "RO_nor_n_i" where n is number of stages and i is instance number
-        ringOsc.port(in_p,"i") #set the input/output ports as defined by the user
-        ringOsc.port(out_p,"o")
-        ringOsc.logic("a0",1,"synthesis keep") 
-        for i in range(n - 1): #create n number of logic types
-            ringOsc.logic("r{num}".format(num=str(i)),1,"synthesis keep")
-        ringOsc.nandGate("a0",in_p,"r{n}".format(n=str(n - 2)),"synthesis keep") #set the enable gate
+        ringOsc = verilogModule(moduleName)                                         #create a new verilog module named "RO_nor_n_i" where n is number of stages and i is instance number
+        ringOsc.port(in_p,"i")                                                      #set the input enable port as defined by the user
+        ringOsc.port(out_p,"o")                                                     #set the output port as defined by the user
+        ringOsc.logic("a0",1,"synthesis keep")                                      #create "logic" data types for connecting gates
+        for i in range(n - 1):                                                      
+            ringOsc.logic("r{num}".format(num=str(i)),1,"synthesis keep")           #the /*synthesis keep*/ tag tells Quartus to not optimize it out
+        ringOsc.nandGate("a0",in_p,"r{n}".format(n=str(n - 2)),"synthesis keep")    #set the enable gate
         ringOsc.norGate("r0","a0","a0","synthesis keep")
-        for i in range(n - 2): #create n number of inverter stages
+        for i in range(n - 2):                                                      #create n number of inverter stages
             ringOsc.norGate("r{num}".format(num=str(i + 1)),"r{num}".format(num=str(i)),"r{num}".format(num=str(i)),"synthesis keep")  
         ringOsc.assign(out_p,"r{num}".format(num=str(n - 2)),"synthesis keep")
-        newFile.writeSubModule(ringOsc) #writes module created above to the new file 
+        newFile.writeSubModule(ringOsc)                                             #writes module created above to the new file 
 
-        self.modules.append(moduleName) #save name and ports so that they can be connected in top module later
+        self.modules.append(moduleName)                                             #save name and ports so that they can be connected in top module later
         self.inputs.append([in_p])
         self.outputs.append([out_p])
         print("RO_nor of {num} generated".format(num=str(n)))
@@ -117,20 +117,20 @@ class generate:
     """
     def onChipMem(self,d,wren,clk,write_addr,read_addr,q,newFile):
         moduleName = "mem_M10K_{instance}".format(instance=str(len(self.modules)))
-        memory = verilogModule(moduleName) #create a new Verilog module named "mem_M10K_i" where i is instance number
-        memory.port(d,"i",32)
-        memory.port(wren,"i")
-        memory.port(clk,"i")
-        memory.port(write_addr,"i",8)
-        memory.port(read_addr,"i",8)
-        memory.port(q,"o",32)
-        memory.logic("mem [255:0]",32,'synthesis ramstyle = "no_rw_check, M10K"') #add synthesis parameter to force M10K 
-        i = memory.alwaysSequential([{clk:"p"}])
+        memory = verilogModule(moduleName)                                         #create a new Verilog module named "mem_M10K_i" where i is instance number
+        memory.port(d,"i",32)                                                      #input data signal
+        memory.port(wren,"i")                                                      #input write enable
+        memory.port(clk,"i")                                                       #input clock
+        memory.port(write_addr,"i",8)                                              #input write address
+        memory.port(read_addr,"i",8)                                               #input read address
+        memory.port(q,"o",32)                                                      #output data
+        memory.logic("mem [255:0]",32,'synthesis ramstyle = "no_rw_check, M10K"')  #add synthesis parameter to force M10K 
+        i = memory.alwaysSequential([{clk:"p"}])                                   #always @(posedge clk) begin
         memory.ifStatement(i,wren,"mem[{w_a}] <= {din}".format(w_a=write_addr,din=d))
         memory.nbAssign(i,q,"mem[{r_a}]".format(r_a=read_addr))
-        newFile.writeSubModule(memory) #writes module created above to the new file 
+        newFile.writeSubModule(memory)                                             #writes module created above to the new file 
 
-        self.modules.append(moduleName) #save name and ports so that they can be connected in top module later
+        self.modules.append(moduleName)                                            #save name and ports so that they can be connected in top module later
         self.inputs.append([d,wren,clk,write_addr,read_addr])
         self.outputs.append([q])
         print("M10K memory block generated")
