@@ -21,8 +21,8 @@ There is a basic script setup to prompt the user to input the desired RO paramet
 	
 3. Create submodule(s)
 
-`genModules.RO_not(n,in_port,out_port,newFile)`
+`genModules.RO_not(n,in_port,out_port,newFile);`
 	
 4. Create the top module to link everything
 
-`newFile.writeTopModule(genModules)`	
+`newFile.writeTopModule(genModules);`	
