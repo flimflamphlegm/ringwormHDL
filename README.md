@@ -1,7 +1,7 @@
 # ringwormHDL
 if you like it you should've put a ring oscillator on it
 
-![ring oscillator with enable](https://github.com/flimflamphlegm/ringwormHDL/blob/main/ringwormHDL/ro.png)
+![ring oscillator with enable](https://github.com/flimflamphlegm/ringwormHDL/blob/main/ro.png)
 
 ## Functions
 - Create ring oscillators with user-specified input/output ports, so that they can be connected to I/O or power internally
