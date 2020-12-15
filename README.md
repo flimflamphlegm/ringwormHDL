@@ -1,5 +1,5 @@
 # ringwormHDL
-if you like it you should've put a ring oscillator on it
+A Python script that generates SystemVerilog files to synthesize ring oscillators
 
 ![ring oscillator with enable](https://github.com/flimflamphlegm/ringwormHDL/blob/main/ro.png)
 
