@@ -91,7 +91,7 @@ class verilogModule:
         return temp
 
     """
-    notGate: creates a NOT gate with /*synthesis keep*/ 
+    notGate: creates a NOT gate with synthesis parameter
     returns dict key
     a - input port (str)
     b - output port (str)
@@ -103,7 +103,7 @@ class verilogModule:
         return temp
 
     """
-    andGate: creates an AND gate with /*synthesis keep*/ 
+    andGate: creates an AND gate with synthesis parameter
     returns dict key
     o - output port (str)
     a - input port 1 (str)
@@ -116,7 +116,7 @@ class verilogModule:
         return temp
 
     """
-    nandGate: creates a NAND gate with /*synthesis keep*/ 
+    nandGate: creates a NAND gate with synthesis parameter
     returns dict key
     o - output port (str)
     a - input port 1 (str)
@@ -129,7 +129,7 @@ class verilogModule:
         return temp
 
     """
-    norGate: creates a NOR gate with /*synthesis keep*/ 
+    norGate: creates a NOR gate with synthesis parameter
     returns dict key
     o - output port (str)
     a - input port 1 (str)
@@ -144,9 +144,9 @@ class verilogModule:
     """
     alwaysSequential: creates a sequential always block with input edge conditions
     returns index in sequential list that all commands for this always block should be input in
-    signals: name of signals and "p/n" for posedge/negedge, leave empty for * wild card (comma seperated string)
+    signals: name of signals and "p/n" for posedge/negedge, leave empty for * wild card (dict)
     """
-    def alwaysSequential(self,signals=""):
+    def alwaysSequential(self,signals={}):
         self.sequential.append(signals)                                 #store params in list for generation later          
         return len(self.sequential) - 1
 

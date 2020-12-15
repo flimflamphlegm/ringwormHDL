@@ -125,37 +125,37 @@ class writeToFile:
     modules - generate object, from which we take the lists of module names/ports
     """
     def writeTopModule(self,modules):
-        file = open(self.fileName , "a") #open file to append
-        file.write("module top_module\n") #write module name
+        file = open(self.fileName , "a")                                    #open file to append
+        file.write("module top_module\n")                                   #write module name
 
         #topmodule inputs
         temp = []
-        for port in modules.inputs: #extract ports from list
+        for port in modules.inputs:                                         #extract ports from list
             for i in port:
-                if i != "pwr" and "input logic {p}".format(p=i) not in temp: #verbose way to check if the port already was written
+                if i != "pwr" and "input logic {p}".format(p=i) not in temp:#verbose way to check if the port already was written
                     temp.append("input logic {}".format(i))
-        file.write("\t({ports},\n".format(ports=",\n\t".join(temp))) #convert list to string and write
+        file.write("\t({ports},\n".format(ports=",\n\t".join(temp)))        #convert list to string and write
 
         #topmodule outputs
         temp.clear()
         for port in modules.outputs: #extract ports from list
             for i in port:
-                if "output logic {p}".format(p=i) not in temp: #verbose way to check if the port already was written
+                if "output logic {p}".format(p=i) not in temp:              #verbose way to check if the port already was written
                     temp.append("output logic {}".format(i))
-        file.write("\t{ports});\n\n".format(ports=",\n\t".join(temp))) #convert list to string and write
+        file.write("\t{ports});\n\n".format(ports=",\n\t".join(temp)))      #convert list to string and write
         
         #instantiate modules 
         for i in range(len(modules.modules)):
             file.write("\t{name} inst_{num} (".format(name=modules.modules[i],num=i))
             temp.clear()
-            for j in modules.inputs[i]: #connecting input ports of module
-                if j == "pwr":
-                    temp.append(".{in_p}(1'b1)".format(in_p=j))
-                else:
+            for j in modules.inputs[i]:                                     #connecting input ports of module
+                if j == "pwr":                                              #if 'pwr' connect enable to power internally
+                    temp.append(".{in_p}(1'b1)".format(in_p=j))     
+                else:                                                       #else connect enable to input port
                     temp.append(".{in_p}({in_p})".format(in_p=j))
             file.write("{inputs},".format(inputs=",".join(temp))) 
             temp.clear()
-            for j in modules.outputs[i]: #connecting output ports of module
+            for j in modules.outputs[i]:                                    #connecting output ports of module
                 temp.append(".{out_p}({out_p})".format(out_p=j))
             file.write("{outputs});\n".format(outputs=",".join(temp)))
 
