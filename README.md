@@ -12,13 +12,17 @@ if you like it you should've put a ring oscillator on it
 There is a basic script setup to prompt the user to input the desired RO parameters, but different outputs can be manually configured:
 
 1. Create a new file
+
 `newFile = writeToFile("ro.sv");`
 	
 2. Create a generate class to store all the submodules
+
 `genModules = generate();`
 	
 3. Create submodule(s)
+
 `genModules.RO_not(n,in_port,out_port,newFile)`
 	
 4. Create the top module to link everything
+
 `newFile.writeTopModule(genModules)`	
