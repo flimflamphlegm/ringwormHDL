@@ -1,29 +1,32 @@
 from verilogModule import verilogModule
 from writeToFile import writeToFile
 
-"""
-generate - class for generating test structures (ring oscillators)
-"""
+
 class generate:
     """
-    __init__: stores names of all generated modules so that they can be connected in the top module
-    self.modules - list of module names (str)
-    self.inputs - list of list of module input names (List[List[str]])
-    self.outputs - list of list of module output names (List[List[str]])
+    generate - class for generating test structures (ring oscillators)
     """
-    def __init__(self):
+    
+    def __init__(self) -> None:
+        """
+        __init__: stores names of all generated modules so that they can be connected in the top module
+        self.modules - list of module names (List[str])
+        self.inputs - list of list of module input names (List[List[str]]), where the index = module number
+        self.outputs - list of list of module output names (List[List[str]]), where the index = module number
+        """
         self.modules = []
         self.inputs = []
         self.outputs = []
 
-    """
-    RO_not: Generates a ring oscillator circuit of size n with NOT gates, where n is a positive odd integer.
-    returns module name
-    n - number of stages in RO (int)
-    in_p - name of input enable port (str)
-    newFile - writeToFile object
-    """
-    def RO_not(self,n,in_p,out_p,newFile):
+
+    def RO_not(self, n:int, in_p:str, out_p:str, newFile:writeToFile) -> str:
+        """
+        RO_not: Generates a ring oscillator circuit of size n with NOT gates, where n is a positive odd integer.
+        Writes module to file specified, returns module name
+        n - number of stages in RO (int)
+        in_p - name of input enable port (str)
+        newFile - writeToFile object
+        """
         moduleName = "RO_not_{stages}_{instance}".format(stages=str(n),instance=str(len(self.modules)))
         ringOsc = verilogModule(moduleName)                                         #create a new verilog module named "RO_not_n_i" where n is number of stages and i is instance number
         ringOsc.port(in_p,"i")                                                      #set the input enable port as defined by the user
@@ -44,15 +47,16 @@ class generate:
         print("RO_not of {num} generated".format(num=str(n)))
         return moduleName
 
-    """
-    RO_nand: Generates a ring oscillator circuit of size n with NAND gates, where n is a positive odd integer.
-    returns module name
-    n - number of stages in RO (int)
-    in_p - name of input enable port (str)
-    out_p - name of output clock port (str)
-    newFile - writeToFile object
-    """
-    def RO_nand(self,n,in_p,out_p,newFile):
+
+    def RO_nand(self, n:int, in_p:str, out_p:str, newFile:writeToFile) -> str:
+        """
+        RO_nand: Generates a ring oscillator circuit of size n with NAND gates, where n is a positive odd integer.
+        Writes module to file specified, returns module name
+        n - number of stages in RO (int)
+        in_p - name of input enable port (str)
+        out_p - name of output clock port (str)
+        newFile - writeToFile object
+        """
         moduleName = "RO_nand_{stages}_{instance}".format(stages=str(n),instance=str(len(self.modules)))
         ringOsc = verilogModule(moduleName)                                         #create a new verilog module named "RO_nand_n_i" where n is number of stages and i is instance number
         ringOsc.port(in_p,"i")                                                      #set the input enable port as defined by the user
@@ -73,15 +77,16 @@ class generate:
         print("RO_nand of {num} generated".format(num=str(n)))
         return moduleName
 
-    """
-    RO_nor: Generates a ring oscillator circuit of size n with NOR gates, where n is a positive odd integer.
-    returns module name
-    n - number of stages in RO (int)
-    in_p - name of input enable port (str)
-    out_p - name of output clock port (str)
-    newFile - writeToFile object
-    """
-    def RO_nor(self,n,in_p,out_p,newFile):
+    
+    def RO_nor(self, n:int, in_p:str, out_p:str, newFile:writeToFile) -> str:
+        """
+        RO_nor: Generates a ring oscillator circuit of size n with NOR gates, where n is a positive odd integer.
+        Writes module to file specified, returns module name
+        n - number of stages in RO (int)
+        in_p - name of input enable port (str)
+        out_p - name of output clock port (str)
+        newFile - writeToFile object
+        """
         moduleName = "RO_nor_{stages}_{instance}".format(stages=str(n),instance=str(len(self.modules)))
         ringOsc = verilogModule(moduleName)                                         #create a new verilog module named "RO_nor_n_i" where n is number of stages and i is instance number
         ringOsc.port(in_p,"i")                                                      #set the input enable port as defined by the user
@@ -102,20 +107,23 @@ class generate:
         print("RO_nor of {num} generated".format(num=str(n)))
         return moduleName
 
+    
     """
-    onChipMem: Generates M10K on chip memory (for DE1-SoC, may need to be tweaked depending on which FPGA board is used)
-    returns module name
-    d - input data signal (str)
-    wren - write enable signal (str)
-    clk - clock signal (str)
-    write_addr - write address (str)
-    read_addr - read address (str)
-    q - output (str)
-
     Verilog that is generated based on code from Prof. Land @ Cornell: 
     https://people.ece.cornell.edu/land/courses/ece5760/DE1_SOC/Memory/index.html
     """
-    def onChipMem(self,d,wren,clk,write_addr,read_addr,q,newFile):
+    def onChipMem(self, d:str, wren:str, clk:str, write_addr:str, read_addr:str, q:str, newFile:writeToFile) -> str:
+        """
+        onChipMem: Generates M10K on chip memory (for DE1-SoC, may need to be tweaked depending on which FPGA board is used)
+        returns module name
+        d - input data signal (str)
+        wren - write enable signal (str)
+        clk - clock signal (str)
+        write_addr - write address (str)
+        read_addr - read address (str)
+        q - output (str)
+        newFile - writeToFile object
+        """
         moduleName = "mem_M10K_{instance}".format(instance=str(len(self.modules)))
         memory = verilogModule(moduleName)                                         #create a new Verilog module named "mem_M10K_i" where i is instance number
         memory.port(d,"i",32)                                                      #input data signal

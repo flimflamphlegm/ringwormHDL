@@ -1,22 +1,32 @@
 from verilogModule import verilogModule
 
-"""
-writeToFile - class for creating/writing the generated SystemVerilog to a .sv file
-"""
 class writeToFile:
     """
-    initialization creates new file with specified file name
+    writeToFile - class for creating/writing the generated SystemVerilog to a .sv file
     """
-    def __init__(self,fileName):
+    
+    def __init__(self, fileName:str) -> None:
+        """
+        initialization: creates new file with specified file name
+        fileName: name of SystemVerilog file (str)
+        """
         self.fileName = fileName
         file = open(fileName,"w")                                           #overwrites existing copy of file, start from blank file
         file.close()
-
-    """
-    writeModule: writes the module to the file, takes file name from writeToFile instance
-    module - verilogModule object
-    """
-    def writeSubModule(self,module):
+    
+    def writeSubModule(self, module:verilogModule) -> None:
+        """
+        writeSubModule: writes the module to the file, takes file name from writeToFile instance
+        generation format:
+        module <name> 
+            #(<parameters>)
+            (<ports>);
+            <logic decl.>;
+            <combinational logic>;
+            <sequential logic>;
+        endmodule
+        module - verilogModule object
+        """
         #write module name
         file = open(self.fileName , "a")                                    #open file to append
         file.write("module {name}\n".format(name=module.moduleName))
@@ -120,11 +130,16 @@ class writeToFile:
         file.write("endmodule\n\n")
         file.close()
 
-    """
-    writeTopModule: writes generated modules into a top_module for synthesis
-    modules - generate object, from which we take the lists of module names/ports
-    """
-    def writeTopModule(self,modules):
+    def writeTopModule(self, modules:verilogModule) -> None:
+        """
+        writeTopModule: writes generated modules into a top_module for synthesis
+        generation format:
+        module <name> 
+            (<ports>);
+            <module instantiations>;
+        endmodule
+        modules - generate object, from which we take the lists of module names/ports
+        """
         file = open(self.fileName , "a")                                    #open file to append
         file.write("module top_module\n")                                   #write module name
 
